@@ -1,0 +1,372 @@
+{
+  "source": "World Health Organization (WHO) Fact Sheets + Primary Care",
+  "synced_at": "2026-11-24T18:43:33.767503+00:00",
+  "count": 26,
+  "conditions": [
+    {
+      "name": "Acidity / Gastritis (Indigestion)",
+      "source": "WHO Primary Care",
+      "who_url": "",
+      "specialist": "Gastroenterologist",
+      "overview": "Stomach lining irritation or acid reflux causing upper stomach pain, nausea, or chest discomfort after meals.",
+      "symptoms": {
+        "Stomach Pain": 3,
+        "Vomiting": 2,
+        "Chest Pain": 1,
+        "Loss of Appetite": 1
+      }
+    },
+    {
+      "name": "Anaemia (Low Haemoglobin)",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/anaemia",
+      "specialist": "General Physician",
+      "overview": "Anaemia is a condition in which the number of red blood cells or the haemoglobin concentration within them is lower than normal. It mainly affects women and children.",
+      "symptoms": {
+        "Headache": 2,
+        "Breathing Problem": 3,
+        "Dizziness": 3,
+        "Weakness": 3
+      }
+    },
+    {
+      "name": "Asthma / Breathing Allergy",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/asthma",
+      "specialist": "Pulmonologist",
+      "overview": "Asthma is a chronic lung disease affecting people of all ages. It is caused by inflammation and muscle tightening around the airways, which makes it harder to breathe.",
+      "symptoms": {
+        "Cough": 2,
+        "Breathing Problem": 3,
+        "Chest Pain": 2
+      }
+    },
+    {
+      "name": "COVID-19 / Viral Respiratory Illness",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/coronavirus-disease-(covid-19)",
+      "specialist": "General Physician",
+      "overview": "COVID-19 is the disease caused by the SARS-CoV-2 coronavirus. It usually spreads between people in close contact.",
+      "symptoms": {
+        "Fever": 1,
+        "Cold": 1,
+        "Cough": 1,
+        "Headache": 1,
+        "Vomiting": 2,
+        "Loose Motion": 1,
+        "Stomach Pain": 1,
+        "Breathing Problem": 2,
+        "Chest Pain": 1,
+        "Dizziness": 1,
+        "Weakness": 2,
+        "Body Pain": 1,
+        "Sore Throat": 1,
+        "Chills": 1
+      }
+    },
+    {
+      "name": "Chest / Heart Warning (Needs Urgent Check)",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)",
+      "specialist": "Cardiologist",
+      "overview": "Chest pain or breathing trouble can sometimes indicate a serious heart or lung issue and should be evaluated promptly by a doctor.",
+      "symptoms": {
+        "Chest Pain": 3,
+        "Breathing Problem": 3,
+        "Dizziness": 2,
+        "Weakness": 1
+      }
+    },
+    {
+      "name": "Chikungunya (Fever & Joint Pain)",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/chikungunya",
+      "specialist": "General Physician",
+      "overview": "In symptomatic patients, CHIKV disease onset is typically 4–8 days (range 2–12 days) after the bite of an infected mosquito. It is characterized by an abrupt onset of fever, frequently accompanied by severe joint pain....",
+      "symptoms": {
+        "Fever": 2,
+        "Headache": 2,
+        "Vomiting": 2,
+        "Weakness": 2,
+        "Body Pain": 2,
+        "Skin Rash": 2,
+        "Joint Pain": 3,
+        "Swelling": 2
+      }
+    },
+    {
+      "name": "Common Cold & Cough",
+      "source": "WHO Primary Care",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/influenza-(seasonal)",
+      "specialist": "General Physician",
+      "overview": "Mild upper respiratory viral infection causing runny nose, sneezing, sore throat, and cough. Usually improves with rest and fluids.",
+      "symptoms": {
+        "Cold": 3,
+        "Cough": 3,
+        "Sore Throat": 2,
+        "Fever": 1,
+        "Headache": 1,
+        "Weakness": 1
+      }
+    },
+    {
+      "name": "Dehydration / Heat Exhaustion",
+      "source": "WHO Primary Care",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/diarrhoeal-disease",
+      "specialist": "General Physician",
+      "overview": "Loss of body fluids and salts causing dizziness, weakness, headache, and fatigue, especially after fever, vomiting, or loose motion.",
+      "symptoms": {
+        "Dizziness": 3,
+        "Weakness": 3,
+        "Headache": 2,
+        "Loose Motion": 1,
+        "Vomiting": 1
+      }
+    },
+    {
+      "name": "Dengue",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue",
+      "specialist": "General Physician",
+      "overview": "Dengue (break-bone fever) is a viral infection that spreads from mosquitoes to people. It is more common in tropical and subtropical climates.",
+      "symptoms": {
+        "Fever": 3,
+        "Headache": 2,
+        "Vomiting": 3,
+        "Stomach Pain": 2,
+        "Weakness": 3,
+        "Skin Rash": 2,
+        "Eye Pain": 2,
+        "Body Pain": 2
+      }
+    },
+    {
+      "name": "Ear Infection",
+      "source": "WHO Primary Care",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "specialist": "ENT Specialist",
+      "overview": "Common middle or outer ear infection causing ear pain, mild fever, or dizziness, often following a cold.",
+      "symptoms": {
+        "Ear Pain": 3,
+        "Fever": 1,
+        "Cold": 1,
+        "Dizziness": 1
+      }
+    },
+    {
+      "name": "Eye Infection / Allergy (Conjunctivitis)",
+      "source": "WHO Primary Care",
+      "who_url": "",
+      "specialist": "Ophthalmologist",
+      "overview": "Irritation or infection of the eye causing redness, itching, watering, or mild eye pain.",
+      "symptoms": {
+        "Eye Pain": 3,
+        "Headache": 1
+      }
+    },
+    {
+      "name": "Food Poisoning / Stomach Infection",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/diarrhoeal-disease",
+      "specialist": "Gastroenterologist",
+      "overview": "Common digestive illness from contaminated food or water causing loose motion, vomiting, and stomach cramps. Hydration (ORS) is important.",
+      "symptoms": {
+        "Loose Motion": 3,
+        "Vomiting": 3,
+        "Stomach Pain": 3,
+        "Weakness": 1,
+        "Fever": 1
+      }
+    },
+    {
+      "name": "Hepatitis B / Liver Infection",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/hepatitis-b",
+      "specialist": "Gastroenterologist",
+      "overview": "Hepatitis B is an infection of the liver caused by the hepatitis B virus. The infection can be acute (short and severe) or chronic (long term).",
+      "symptoms": {
+        "Vomiting": 3,
+        "Jaundice": 3
+      }
+    },
+    {
+      "name": "High Blood Pressure (Hypertension)",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/hypertension",
+      "specialist": "Cardiologist",
+      "overview": "Hypertension (high blood pressure) is when the pressure in your blood vessels is too high (140/90 mmHg or higher). It is common but can be serious if not treated.",
+      "symptoms": {
+        "Headache": 3,
+        "Vomiting": 3,
+        "Breathing Problem": 2,
+        "Chest Pain": 3,
+        "Dizziness": 2
+      }
+    },
+    {
+      "name": "Jaundice / Hepatitis A",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/hepatitis-a",
+      "specialist": "Gastroenterologist",
+      "overview": "Unlike hepatitis B and C, hepatitis A does not cause chronic liver disease but it can cause mild to severe symptoms and rarely fulminant hepatitis (acute liver failure), which is often fatal. However, infection does not...",
+      "symptoms": {
+        "Fever": 1,
+        "Vomiting": 1,
+        "Loose Motion": 1,
+        "Jaundice": 1,
+        "Loss of Appetite": 1
+      }
+    },
+    {
+      "name": "Joint Pain / Arthritis",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/rheumatoid-arthritis",
+      "specialist": "Orthopaedic Specialist",
+      "overview": "Rheumatoid arthritis (RA) is a chronic disease that causes inflammation around the body and commonly presents with pain in the joints.",
+      "symptoms": {
+        "Fever": 2,
+        "Weakness": 2,
+        "Loss of Appetite": 2,
+        "Swelling": 2
+      }
+    },
+    {
+      "name": "Kidney / Urinary Health Issue",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/kidney-disease",
+      "specialist": "Nephrologist",
+      "overview": "Kidney disease is often asymptomatic until late stages, which is why regular testing is important for people at risk. In advanced or severe kidney disease, symptoms may include fatigue, breathlessness, generalized...",
+      "symptoms": {
+        "Vomiting": 3,
+        "Breathing Problem": 2,
+        "Weakness": 2,
+        "Swelling": 2
+      }
+    },
+    {
+      "name": "Lower Back / Muscle Pain",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/low-back-pain",
+      "specialist": "Orthopaedic Specialist",
+      "overview": "Low back pain (LBP) describes pain between the lower edge of the ribs and the buttock. It can last for a short time (acute), a little longer (sub-acute) or a long time (chronic). It can affect anyone.",
+      "symptoms": {
+        "Weakness": 1,
+        "Body Pain": 2
+      }
+    },
+    {
+      "name": "Malaria",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/malaria",
+      "specialist": "General Physician",
+      "overview": "Malaria is a life-threatening disease spread to humans by some types of mosquitoes. It is mostly found in tropical countries. It is preventable and curable.",
+      "symptoms": {
+        "Fever": 3,
+        "Headache": 3,
+        "Breathing Problem": 2,
+        "Weakness": 3,
+        "Chills": 3,
+        "Jaundice": 2
+      }
+    },
+    {
+      "name": "Seasonal Flu (Viral Fever)",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/influenza-(seasonal)",
+      "specialist": "General Physician",
+      "overview": "Seasonal influenza (the flu) is an acute respiratory infection caused by influenza viruses. It is common in all parts of the world. Most people recover without treatment.",
+      "symptoms": {
+        "Fever": 3,
+        "Cold": 2,
+        "Cough": 3,
+        "Headache": 2,
+        "Sore Throat": 2,
+        "Joint Pain": 2
+      }
+    },
+    {
+      "name": "Skin Allergy / Rash (Dermatitis)",
+      "source": "WHO Primary Care",
+      "who_url": "",
+      "specialist": "Dermatologist",
+      "overview": "Common skin reaction to allergens, heat, or irritation causing redness, itching, bumps, or rash.",
+      "symptoms": {
+        "Skin Rash": 3,
+        "Swelling": 1
+      }
+    },
+    {
+      "name": "Throat Infection (Tonsillitis / Pharyngitis)",
+      "source": "WHO Primary Care",
+      "who_url": "",
+      "specialist": "ENT Specialist",
+      "overview": "Irritation or infection of the throat causing throat pain, difficulty swallowing, cough, or mild fever.",
+      "symptoms": {
+        "Sore Throat": 3,
+        "Cough": 2,
+        "Fever": 2,
+        "Cold": 1,
+        "Swelling": 1
+      }
+    },
+    {
+      "name": "Tuberculosis (TB) — Persistent Cough",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+      "specialist": "Pulmonologist",
+      "overview": "Tuberculosis (TB) is an infectious disease that most often affects the lungs. TB is caused by a type of bacteria. It spreads through the air when infected people cough, sneeze or spit.",
+      "symptoms": {
+        "Fever": 2,
+        "Cough": 2,
+        "Chest Pain": 2,
+        "Weakness": 3,
+        "Weight Loss": 2,
+        "Night Sweats": 2
+      }
+    },
+    {
+      "name": "Typhoid Fever",
+      "source": "WHO",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/typhoid",
+      "specialist": "General Physician",
+      "overview": "Salmonella Typhi lives only in humans. Persons with typhoid fever carry the bacteria in their bloodstream and intestinal tract. Symptoms include prolonged high fever, fatigue, headache, nausea, abdominal pain, and...",
+      "symptoms": {
+        "Fever": 3,
+        "Headache": 2,
+        "Vomiting": 2,
+        "Loose Motion": 2,
+        "Stomach Pain": 2,
+        "Weakness": 2,
+        "Skin Rash": 2,
+        "Constipation": 2
+      }
+    },
+    {
+      "name": "Urinary Tract Infection (UTI)",
+      "source": "WHO Primary Care",
+      "who_url": "",
+      "specialist": "Urologist",
+      "overview": "Common urinary infection causing burning or discomfort while urinating, lower stomach pain, or fever.",
+      "symptoms": {
+        "Urinary Burning": 3,
+        "Stomach Pain": 2,
+        "Fever": 1
+      }
+    },
+    {
+      "name": "Viral Fever",
+      "source": "WHO Primary Care",
+      "who_url": "https://www.who.int/news-room/fact-sheets/detail/influenza-(seasonal)",
+      "specialist": "General Physician",
+      "overview": "Common short-term fever caused by viral infection, often accompanied by body ache, headache, and tiredness.",
+      "symptoms": {
+        "Fever": 3,
+        "Body Pain": 2,
+        "Headache": 2,
+        "Weakness": 2,
+        "Chills": 1,
+        "Cold": 1
+      }
+    }
+  ]
+}

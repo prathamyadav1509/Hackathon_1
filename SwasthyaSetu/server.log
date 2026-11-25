@@ -1,0 +1,21 @@
+INFO:     Started server process [11540]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57280 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60588 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60588 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60433 - "GET /js/language.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60433 - "GET /js/location.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60588 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59318 - "GET /index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59319 - "POST /assess HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:55455 - "POST /assess HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55456 - "GET /assessment-history HTTP/1.1" 200 OK
+Overpass API unavailable, using Nominatim fallback: HTTPSConnectionPool(host='overpass-api.de', port=443): Read timed out. (read timeout=6)
+INFO:     127.0.0.1:55457 - "GET /nearby-healthcare?latitude=28.6139&longitude=77.209&radius_km=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60711 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60711 - "GET /css/style.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59368 - "GET /js/language.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59765 - "GET /js/location.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59765 - "GET /favicon.ico HTTP/1.1" 404 Not Found

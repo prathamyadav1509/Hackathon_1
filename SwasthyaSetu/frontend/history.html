@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthyaSetu | Assessment History</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/language.js"></script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-inner">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </span>
+                <span>
+                    SwasthyaSetu
+                    <span class="brand-sub" data-i18n="brandSub">Preliminary Health Triage &amp; Care</span>
+                </span>
+            </a>
+
+            <nav class="nav-menu" aria-label="Main navigation">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="symptoms.html" id="checkSymptomsLink" data-i18n="checkSymptoms">Check My Symptoms</a>
+                <a href="nearby.html" id="nearbyNavLink" data-i18n="nearbyHospitalsNav">Nearby Care</a>
+                <a href="history.html" id="historyLink" aria-current="page" data-i18n="historyNav">History</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="lang-picker">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    <select id="languageSelect" aria-label="Select language">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <div class="container">
+            <div class="page-intro">
+                <span class="eyebrow-pill" id="historyBadge">Assessment Log</span>
+                <h1 id="historyTitle">Your Assessment History</h1>
+                <p id="historySubtitle">Review previous symptom assessments and triage recommendations.</p>
+            </div>
+
+            <div id="loading" class="state-card">
+                <div class="state-icon" aria-hidden="true">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <p id="loadingText">Loading your assessment history...</p>
+            </div>
+
+            <div id="historyList" class="history-list" style="display:none;"></div>
+
+            <div id="emptyState" class="state-card" style="display:none;">
+                <div class="state-icon" aria-hidden="true">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                </div>
+                <h3 id="emptyTitle">No Assessment History</h3>
+                <p id="emptyText">You have not completed any symptom assessment yet.</p>
+                <a href="symptoms.html" class="btn-primary btn-sm" id="emptyButton">Check My Symptoms</a>
+            </div>
+
+            <div id="errorState" class="state-card" style="display:none;">
+                <div class="state-icon error" aria-hidden="true">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </div>
+                <h3 id="errorTitle">Unable to Load History</h3>
+                <p id="errorText">Please make sure the SwasthyaSetu server is running.</p>
+                <button type="button" class="btn-primary btn-sm" id="retryButton" onclick="loadHistory()">Try Again</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand">SwasthyaSetu</div>
+                <div class="footer-sub" data-i18n="footerNotice">Not a substitute for professional medical diagnosis or treatment.</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="symptoms.html" data-i18n="checkSymptoms">Check My Symptoms</a>
+                <a href="nearby.html" data-i18n="nearbyHospitalsNav">Nearby Care</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const historyTranslations = {
+            en: {
+                badge: "Assessment Log",
+                title: "Your Assessment History",
+                subtitle: "Review previous symptom assessments and triage recommendations.",
+                loading: "Loading your assessment history...",
+                age: "Age",
+                symptoms: "Symptoms",
+                duration: "Duration",
+                risk: "Urgency",
+                specialist: "Specialist",
+                low: "Low",
+                moderate: "Moderate",
+                urgent: "Urgent",
+                noHistory: "No Assessment History",
+                noHistoryText: "You have not completed any symptom assessment yet.",
+                checkSymptoms: "Check My Symptoms",
+                nearbyCare: "Nearby Care",
+                history: "History",
+                error: "Unable to Load History",
+                errorText: "Please make sure the SwasthyaSetu server is running.",
+                retry: "Try Again",
+                cardTitle: "Health Assessment"
+            },
+            hi: {
+                badge: "मूल्यांकन रिकॉर्ड",
+                title: "आपके स्वास्थ्य मूल्यांकन का इतिहास",
+                subtitle: "अपने पिछले लक्षण मूल्यांकन और सुझाव देखें।",
+                loading: "आपके मूल्यांकन का इतिहास लोड हो रहा है...",
+                age: "उम्र",
+                symptoms: "लक्षण",
+                duration: "अवधि",
+                risk: "प्राथमिकता",
+                specialist: "विशेषज्ञ",
+                low: "कम",
+                moderate: "मध्यम",
+                urgent: "तत्काल",
+                noHistory: "कोई मूल्यांकन इतिहास नहीं",
+                noHistoryText: "आपने अभी तक कोई स्वास्थ्य मूल्यांकन पूरा नहीं किया है।",
+                checkSymptoms: "लक्षण जांचें",
+                nearbyCare: "पास की स्वास्थ्य सेवा",
+                history: "इतिहास",
+                error: "इतिहास लोड नहीं हो सका",
+                errorText: "कृपया सुनिश्चित करें कि SwasthyaSetu सर्वर चल रहा है।",
+                retry: "दोबारा प्रयास करें",
+                cardTitle: "स्वास्थ्य मूल्यांकन"
+            }
+        };
+
+        const symptomTranslations = {
+            "Fever": "बुखार",
+            "Cold": "जुकाम",
+            "Cough": "खांसी",
+            "Headache": "सिरदर्द",
+            "Vomiting": "उल्टी",
+            "Loose Motion": "दस्त",
+            "Stomach Pain": "पेट दर्द",
+            "Breathing Problem": "सांस लेने में परेशानी",
+            "Chest Pain": "सीने में दर्द",
+            "Dizziness": "चक्कर आना",
+            "Weakness": "कमजोरी",
+            "Body Pain": "शरीर में दर्द",
+            "Other": "अन्य"
+        };
+
+        const durationTranslations = {
+            "1_to_3_days": { en: "1–3 Days", hi: "1–3 दिन" },
+            "4_to_7_days": { en: "4–7 Days", hi: "4–7 दिन" },
+            "1_to_2_weeks": { en: "1–2 Weeks", hi: "1–2 सप्ताह" },
+            "more_than_2_weeks": { en: "More Than 2 Weeks", hi: "2 सप्ताह से अधिक" }
+        };
+
+        const API_BASE =
+            window.location.protocol === "file:" ||
+            ["5500", "5501", "3000", "5173"].includes(window.location.port)
+                ? "http://127.0.0.1:8001"
+                : "";
+
+        function getLanguage() {
+            return localStorage.getItem("selectedLanguage") || "en";
+        }
+
+        function escapeHtml(value) {
+            if (value === null || value === undefined) return "";
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function translateSymptoms(symptoms, language) {
+            if (!symptoms) return "-";
+            return symptoms
+                .split(",")
+                .map(s => {
+                    const clean = s.trim();
+                    if (language === "hi") {
+                        if (clean.startsWith("Other (") && clean.endsWith(")")) {
+                            return "अन्य (" + clean.slice(7);
+                        }
+                        if (symptomTranslations[clean]) {
+                            return symptomTranslations[clean];
+                        }
+                    }
+                    return clean;
+                })
+                .join(", ");
+        }
+
+        function translateDuration(duration, language) {
+            if (durationTranslations[duration] && durationTranslations[duration][language]) {
+                return durationTranslations[duration][language];
+            }
+            return duration || "-";
+        }
+
+        function translateRisk(risk, language) {
+            const t = historyTranslations[language] || historyTranslations.en;
+            if (risk === "Moderate") return t.moderate;
+            if (risk === "Urgent") return t.urgent;
+            if (risk === "Low") return t.low;
+            return risk || "-";
+        }
+
+        function updateLanguageText() {
+            const language = getLanguage();
+            const t = historyTranslations[language] || historyTranslations.en;
+
+            document.getElementById("historyBadge").textContent = t.badge;
+            document.getElementById("historyTitle").textContent = t.title;
+            document.getElementById("historySubtitle").textContent = t.subtitle;
+            document.getElementById("loadingText").textContent = t.loading;
+            document.getElementById("emptyTitle").textContent = t.noHistory;
+            document.getElementById("emptyText").textContent = t.noHistoryText;
+            document.getElementById("emptyButton").textContent = t.checkSymptoms;
+            document.getElementById("errorTitle").textContent = t.error;
+            document.getElementById("errorText").textContent = t.errorText;
+            document.getElementById("retryButton").textContent = t.retry;
+            document.getElementById("checkSymptomsLink").textContent = t.checkSymptoms;
+            document.getElementById("nearbyNavLink").textContent = t.nearbyCare;
+            document.getElementById("historyLink").textContent = t.history;
+        }
+
+        function renderHistory(records) {
+            const language = getLanguage();
+            const t = historyTranslations[language] || historyTranslations.en;
+            const container = document.getElementById("historyList");
+            container.innerHTML = "";
+
+            records.forEach(function (record) {
+                const card = document.createElement("article");
+                card.className = "history-card";
+
+                let riskClass = "risk-low";
+                if (record.risk_level === "Moderate") riskClass = "risk-moderate";
+                if (record.risk_level === "Urgent") riskClass = "risk-urgent";
+
+                let createdDate = "-";
+                if (record.created_at) {
+                    const date = new Date(record.created_at);
+                    createdDate = date.toLocaleString(language === "hi" ? "hi-IN" : "en-IN");
+                }
+
+                card.innerHTML = `
+                    <div class="history-card-head">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <h3>${escapeHtml(t.cardTitle)} #${escapeHtml(record.id ?? "")}</h3>
+                            <span class="risk-badge ${riskClass}" style="margin-bottom:0;">
+                                ${escapeHtml(translateRisk(record.risk_level, language))}
+                            </span>
+                        </div>
+                        <span class="history-date">${escapeHtml(createdDate)}</span>
+                    </div>
+
+                    <div class="history-grid">
+                        <div class="history-cell">
+                            <strong>${escapeHtml(t.age)}</strong>
+                            <span>${escapeHtml(record.age ?? "-")}</span>
+                        </div>
+                        <div class="history-cell">
+                            <strong>${escapeHtml(t.symptoms)}</strong>
+                            <span>${escapeHtml(translateSymptoms(record.symptoms, language))}</span>
+                        </div>
+                        <div class="history-cell">
+                            <strong>${escapeHtml(t.duration)}</strong>
+                            <span>${escapeHtml(translateDuration(record.duration, language))}</span>
+                        </div>
+                        <div class="history-cell">
+                            <strong>${escapeHtml(t.specialist)}</strong>
+                            <span>${escapeHtml(record.recommended_specialist || "-")}</span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        async function loadHistory() {
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("historyList").style.display = "none";
+            document.getElementById("emptyState").style.display = "none";
+            document.getElementById("errorState").style.display = "none";
+            updateLanguageText();
+
+            try {
+                const response = await fetch(`${API_BASE}/assessment-history`);
+                if (!response.ok) throw new Error("Server error");
+
+                const data = await response.json();
+                document.getElementById("loading").style.display = "none";
+
+                if (!data.assessments || data.assessments.length === 0) {
+                    document.getElementById("emptyState").style.display = "block";
+                    return;
+                }
+
+                renderHistory(data.assessments);
+                document.getElementById("historyList").style.display = "grid";
+            } catch (error) {
+                console.error("History error:", error);
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("errorState").style.display = "block";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateLanguageText();
+            loadHistory();
+
+            const languageSelect = document.getElementById("languageSelect");
+            if (languageSelect) {
+                languageSelect.value = getLanguage();
+                languageSelect.addEventListener("change", function () {
+                    localStorage.setItem("selectedLanguage", this.value);
+                    updateLanguageText();
+                    loadHistory();
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

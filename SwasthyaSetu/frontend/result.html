@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthyaSetu | Assessment Report</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/language.js"></script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-inner">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </span>
+                <span>
+                    SwasthyaSetu
+                    <span class="brand-sub" data-i18n="brandSub">Preliminary Health Triage &amp; Care</span>
+                </span>
+            </a>
+
+            <nav class="nav-menu" aria-label="Main navigation">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="symptoms.html" id="navCheckLink" data-i18n="checkSymptoms">Check My Symptoms</a>
+                <a href="nearby.html" id="navNearbyLink" data-i18n="nearbyHospitalsNav">Nearby Care</a>
+                <a href="history.html" id="navHistoryLink" data-i18n="historyNav">History</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="lang-picker">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    <select id="languageSelect" aria-label="Select language">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <div class="container">
+            <div class="page-intro">
+                <span class="eyebrow-pill" id="pageBadge">Preliminary Triage Report</span>
+                <h1 data-i18n="assessmentResult">Your Assessment Result</h1>
+                <p id="pageSubtitle" data-i18n="assessmentSubtitle">
+                    Preliminary health guidance based on the details you provided. Not a medical diagnosis.
+                </p>
+            </div>
+
+            <!-- LOADING -->
+            <div id="loadingBox" class="state-card">
+                <div class="state-icon" aria-hidden="true">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <h2 id="loadingTitle">Preparing your report...</h2>
+                <p id="loadingText">Please wait while your assessment summary is loaded.</p>
+            </div>
+
+            <!-- MAIN REPORT -->
+            <div id="resultContent" class="report-wrap" style="display:none;">
+                <section class="report-card">
+                    <h2 data-i18n="yourInformation">Patient Summary</h2>
+                    <div class="summary-strip">
+                        <div class="summary-cell">
+                            <strong id="ageLabel">Age</strong>
+                            <span id="ageValue">-</span>
+                        </div>
+                        <div class="summary-cell">
+                            <strong id="symptomsLabel">Symptoms</strong>
+                            <span id="symptomsValue">-</span>
+                        </div>
+                        <div class="summary-cell">
+                            <strong id="durationLabel">Duration</strong>
+                            <span id="durationValue">-</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="riskCard" class="report-card triage-card">
+                    <div id="riskLevel" class="risk-badge risk-low">Assessment</div>
+                    <h2 id="riskTitle">-</h2>
+                    <p id="riskMessage" class="triage-lead">-</p>
+                    <div class="next-step-panel">
+                        <strong id="nextStepLabel">Recommended Next Step</strong>
+                        <p id="nextStep">-</p>
+                    </div>
+                </section>
+
+                <div class="two-col-report">
+                    <section class="report-card">
+                        <h2 data-i18n="recommendedSpecialist">Recommended Specialist</h2>
+                        <p class="field-hint" id="specialistDescription">
+                            Based on the symptoms you reported, consider consulting:
+                        </p>
+                        <div id="specialistList" style="display:grid; gap:10px;"></div>
+                    </section>
+
+                    <section class="report-card">
+                        <h2 data-i18n="possibleMatches">Symptom Pattern Matches</h2>
+                        <p class="field-hint" id="conditionDescription">
+                            Symptom-based reference matches from the knowledge base (not a diagnosis).
+                        </p>
+                        <div id="conditionList" class="condition-stack"></div>
+                    </section>
+                </div>
+
+                <section class="report-card nearby-cta-card">
+                    <div>
+                        <h2 data-i18n="nearbyHealthcare" style="margin-bottom:6px;">Find Nearby Care</h2>
+                        <p id="nearbyDescription">
+                            Explore nearby hospitals, available doctors, clinics, and diagnostic labs on the map.
+                        </p>
+                    </div>
+                    <a href="nearby.html" class="btn-primary" id="nearbyButton">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span>Find Nearby Care</span>
+                    </a>
+                </section>
+
+                <div class="notice-banner" style="max-width:100%;">
+                    <span class="notice-icon" aria-hidden="true">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 data-i18n="healthNotice">Important Medical Notice</h2>
+                        <p id="healthNoticeText">
+                            SwasthyaSetu does not diagnose medical conditions or replace a qualified doctor. Always consult a licensed healthcare professional or visit a hospital in an emergency.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="report-actions">
+                    <a href="symptoms.html" class="btn-secondary" id="checkAgainButton">Check Again</a>
+                    <a href="history.html" class="btn-primary" id="historyButton">View History</a>
+                </div>
+            </div>
+
+            <!-- ERROR -->
+            <div id="errorBox" class="state-card" style="display:none;">
+                <div class="state-icon error" aria-hidden="true">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </div>
+                <h2 id="errorTitle">Result Could Not Be Displayed</h2>
+                <p id="errorMessage">Please complete the symptom assessment first.</p>
+                <a href="symptoms.html" class="btn-primary" id="errorButton">Check Symptoms Again</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand">SwasthyaSetu</div>
+                <div class="footer-sub" data-i18n="footerNotice">Not a substitute for professional medical diagnosis or treatment.</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="symptoms.html" data-i18n="checkSymptoms">Check My Symptoms</a>
+                <a href="nearby.html" data-i18n="nearbyHospitalsNav">Nearby Care</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const resultTranslations = {
+            en: {
+                badge: "Preliminary Triage Report",
+                subtitle: "Preliminary health guidance based on the details you provided. Not a medical diagnosis.",
+                age: "Age",
+                symptoms: "Symptoms",
+                duration: "Duration",
+                loadingTitle: "Preparing your report...",
+                loadingText: "Please wait while your assessment summary is loaded.",
+                whatNext: "Recommended Next Step",
+                specialistDescription: "Based on the symptoms you reported, consider consulting:",
+                conditionDescription: "Symptom-based reference matches from the knowledge base (not a diagnosis).",
+                nearbyDescription: "Explore nearby hospitals, available doctors, clinics, and diagnostic labs on the map.",
+                nearbyButton: "Find Nearby Care",
+                notice: "SwasthyaSetu does not diagnose medical conditions or replace a qualified doctor. Always consult a licensed healthcare professional or visit a hospital in an emergency.",
+                checkAgain: "Check Again",
+                history: "View History",
+                errorTitle: "Result Could Not Be Displayed",
+                errorMessage: "Please complete the symptom assessment first.",
+                errorButton: "Check Symptoms Again",
+                noMatches: "No specific symptom pattern matches were identified from the available knowledge base.",
+                matchedSymptoms: "Matched symptoms:",
+                knowledgeSource: "Reference source:",
+                medicalKnowledgeBase: "Medical knowledge base",
+                noSymptoms: "No specific symptoms listed",
+                strongMatch: "Strong symptom match",
+                moderateMatch: "Moderate symptom match",
+                possibleMatch: "Possible symptom match",
+                symptomMatch: "Symptom match",
+                lowRisk: "Low Urgency",
+                moderateRisk: "Moderate Urgency",
+                urgentRisk: "Urgent Attention",
+                lowTitle: "Monitor Your Symptoms",
+                moderateTitle: "Medical Consultation Recommended",
+                urgentTitle: "Prompt Medical Care Recommended",
+                lowMessage: "No urgent warning sign was identified from the information provided. Continue to monitor your symptoms.",
+                moderateMessage: "Your information suggests that speaking with a qualified healthcare professional may be appropriate, especially if the symptoms continue or worsen.",
+                urgentMessage: "The symptoms you selected may require prompt professional medical attention. Please contact a qualified healthcare professional or visit a hospital.",
+                lowNext: "Monitor your symptoms. If they persist, worsen, or cause concern, consult a qualified healthcare professional.",
+                moderateNext: "Consider scheduling a consultation with a healthcare professional and track any changes in your symptoms.",
+                urgentNext: "Seek professional medical care promptly. If symptoms are severe or rapidly worsening, go to the nearest hospital emergency department."
+            },
+            hi: {
+                badge: "प्रारंभिक स्वास्थ्य रिपोर्ट",
+                subtitle: "आपकी दी गई जानकारी पर आधारित प्रारंभिक मार्गदर्शन। यह चिकित्सा निदान नहीं है।",
+                age: "उम्र",
+                symptoms: "लक्षण",
+                duration: "अवधि",
+                loadingTitle: "आपकी रिपोर्ट तैयार हो रही है...",
+                loadingText: "कृपया प्रतीक्षा करें, आपका मूल्यांकन लोड हो रहा है।",
+                whatNext: "अगला सुझाव",
+                specialistDescription: "आपके बताए गए लक्षणों के आधार पर, आप इनसे परामर्श ले सकते हैं:",
+                conditionDescription: "ज्ञान आधार से लक्षण-आधारित संदर्भ मिलान (यह निदान नहीं है)।",
+                nearbyDescription: "मैप पर अपने पास के अस्पताल, उपलब्ध डॉक्टर, क्लिनिक और जांच लैब देखें।",
+                nearbyButton: "पास की स्वास्थ्य सेवा खोजें",
+                notice: "SwasthyaSetu किसी बीमारी की पहचान या इलाज नहीं करता और डॉक्टर का विकल्प नहीं है। किसी भी आपात स्थिति में तुरंत नजदीकी अस्पताल या डॉक्टर से संपर्क करें।",
+                checkAgain: "दोबारा जांचें",
+                history: "इतिहास देखें",
+                errorTitle: "परिणाम दिखाया नहीं जा सका",
+                errorMessage: "कृपया पहले लक्षण मूल्यांकन पूरा करें।",
+                errorButton: "लक्षणों की दोबारा जांच करें",
+                noMatches: "उपलब्ध ज्ञान आधार में कोई विशेष लक्षण पैटर्न नहीं मिला।",
+                matchedSymptoms: "मिलते-जुलते लक्षण:",
+                knowledgeSource: "संदर्भ स्रोत:",
+                medicalKnowledgeBase: "चिकित्सकीय ज्ञान आधार",
+                noSymptoms: "कोई विशिष्ट लक्षण सूचीबद्ध नहीं",
+                strongMatch: "लक्षणों का मजबूत मिलान",
+                moderateMatch: "लक्षणों का मध्यम मिलान",
+                possibleMatch: "संभावित लक्षण मिलान",
+                symptomMatch: "लक्षण मिलान",
+                lowRisk: "कम प्राथमिकता",
+                moderateRisk: "मध्यम प्राथमिकता",
+                urgentRisk: "तत्काल चिकित्सा सहायता",
+                lowTitle: "अपने लक्षणों पर नज़र रखें",
+                moderateTitle: "चिकित्सकीय परामर्श की सलाह",
+                urgentTitle: "शीघ्र चिकित्सा सहायता की सलाह",
+                lowMessage: "दी गई जानकारी में किसी तत्काल चेतावनी संकेत की पहचान नहीं हुई। अपने लक्षणों पर नज़र रखें।",
+                moderateMessage: "आपकी जानकारी के आधार पर योग्य डॉक्टर से परामर्श लेना उचित हो सकता है, खासकर यदि लक्षण बने रहें या बढ़ जाएं।",
+                urgentMessage: "आपके चुने गए लक्षणों के लिए शीघ्र पेशेवर चिकित्सा सहायता आवश्यक हो सकती है। कृपया योग्य डॉक्टर या नजदीकी अस्पताल से संपर्क करें।",
+                lowNext: "अपने लक्षणों पर नज़र रखें। यदि वे बने रहें या बढ़ जाएं, तो योग्य डॉक्टर से परामर्श करें।",
+                moderateNext: "स्वास्थ्य पेशेवर से परामर्श लेने पर विचार करें और देखें कि लक्षण बेहतर हो रहे हैं या बढ़ रहे हैं।",
+                urgentNext: "शीघ्र चिकित्सा सहायता लें। यदि लक्षण गंभीर हों या तेजी से बढ़ रहे हों, तो नजदीकी अस्पताल की आपातकालीन सेवा में जाएं।"
+            }
+        };
+
+        const symptomTranslations = {
+            "Fever": "बुखार",
+            "Cold": "जुकाम",
+            "Cough": "खांसी",
+            "Headache": "सिरदर्द",
+            "Vomiting": "उल्टी",
+            "Loose Motion": "दस्त",
+            "Stomach Pain": "पेट दर्द",
+            "Breathing Problem": "सांस लेने में परेशानी",
+            "Chest Pain": "सीने में दर्द",
+            "Dizziness": "चक्कर आना",
+            "Weakness": "कमजोरी",
+            "Body Pain": "शरीर में दर्द",
+            "Other": "अन्य"
+        };
+
+        const durationTranslations = {
+            "1_to_3_days": { en: "1–3 Days", hi: "1–3 दिन" },
+            "4_to_7_days": { en: "4–7 Days", hi: "4–7 दिन" },
+            "1_to_2_weeks": { en: "1–2 Weeks", hi: "1–2 सप्ताह" },
+            "more_than_2_weeks": { en: "More Than 2 Weeks", hi: "2 सप्ताह से अधिक" }
+        };
+
+        function getCurrentLanguage() {
+            return localStorage.getItem("selectedLanguage") || "en";
+        }
+
+        const conditionTranslations = {
+            "Common Cold & Cough": "सामान्य सर्दी और खांसी",
+            "Viral Fever": "वायरल बुखार",
+            "Food Poisoning / Stomach Infection": "फूड पॉइज़निंग / पेट का संक्रमण",
+            "Acidity / Gastritis (Indigestion)": "एसिडिटी / गैस (अपच)",
+            "Throat Infection (Tonsillitis / Pharyngitis)": "गले में संक्रमण",
+            "Skin Allergy / Rash (Dermatitis)": "त्वचा की एलर्जी / दाने",
+            "Fungal Skin Infection (Ringworm)": "दाद / फंगल त्वचा संक्रमण",
+            "Dehydration / Heat Exhaustion": "पानी की कमी (डिहाइड्रेशन) / कमजोरी",
+            "Urinary Tract Infection (UTI)": "मूत्र मार्ग संक्रमण (UTI)",
+            "Ear Infection": "कान में संक्रमण",
+            "Eye Infection / Allergy (Conjunctivitis)": "आंख का संक्रमण / एलर्जी",
+            "Chest / Heart Warning (Needs Urgent Check)": "सीने या हृदय संबंधी चेतावनी (शीघ्र जांच आवश्यक)",
+            "Dengue": "डेंगू",
+            "Malaria": "मलेरिया",
+            "Typhoid Fever": "टाइफाइड बुखार",
+            "Seasonal Flu (Viral Fever)": "मौसमी फ्लू (वायरल बुखार)",
+            "Asthma / Breathing Allergy": "अस्थमा / सांस की एलर्जी",
+            "Migraine / Severe Headache": "माइग्रेन / तेज सिरदर्द",
+            "Stomach Infection / Diarrhoea": "पेट का संक्रमण / दस्त",
+            "Anaemia (Low Haemoglobin)": "एनीमिया (खून की कमी)",
+            "Jaundice / Hepatitis A": "पीलिया / हेपेटाइटिस A",
+            "Hepatitis B / Liver Infection": "हेपेटाइटिस B / लिवर संक्रमण",
+            "Tuberculosis (TB) — Persistent Cough": "टीबी (लगातार खांसी)",
+            "High Blood Pressure (Hypertension)": "उच्च रक्तचाप (हाई बीपी)",
+            "COVID-19 / Viral Respiratory Illness": "कोविड-19 / श्वसन वायरल संक्रमण",
+            "Chikungunya (Fever & Joint Pain)": "चिकनगुनिया (बुखार और जोड़ों में दर्द)",
+            "Joint Pain / Arthritis": "जोड़ों का दर्द / गठिया",
+            "Lower Back / Muscle Pain": "कमर या मांसपेशियों का दर्द",
+            "Kidney / Urinary Health Issue": "किडनी या मूत्र संबंधी समस्या"
+        };
+
+        function translateConditionName(name, language) {
+            if (language !== "hi") return name || "Unknown";
+            return conditionTranslations[name] || name || "अज्ञात";
+        }
+
+        function translateSymptom(symptom, language) {
+            if (language !== "hi") return symptom;
+            if (symptom.startsWith("Other (") && symptom.endsWith(")")) {
+                return "अन्य (" + symptom.slice(7);
+            }
+            return symptomTranslations[symptom] || symptom;
+        }
+
+        function translateSymptoms(symptoms, language) {
+            if (!symptoms) return "-";
+            return symptoms.split(",").map(s => translateSymptom(s.trim(), language)).join(", ");
+        }
+
+        function translateDuration(duration, language) {
+            if (durationTranslations[duration] && durationTranslations[duration][language]) {
+                return durationTranslations[duration][language];
+            }
+            return duration || "-";
+        }
+
+        function translateSpecialist(specialist, language) {
+            if (language !== "hi") return specialist;
+            const map = {
+                "General Physician": "सामान्य चिकित्सक (General Physician)",
+                "General Physician / Infectious Disease": "सामान्य चिकित्सक / संक्रामक रोग विशेषज्ञ",
+                "Cardiologist": "हृदय रोग विशेषज्ञ (Cardiologist)",
+                "Pulmonologist": "फेफड़े एवं श्वसन विशेषज्ञ (Pulmonologist)",
+                "Gastroenterologist": "पेट एवं पाचन विशेषज्ञ (Gastroenterologist)",
+                "Neurologist": "न्यूरोलॉजिस्ट (Neurologist)",
+                "Dermatologist": "त्वचा रोग विशेषज्ञ (Dermatologist)",
+                "ENT Specialist": "कान-नाक-गला विशेषज्ञ (ENT Specialist)",
+                "Ophthalmologist": "नेत्र रोग विशेषज्ञ (Ophthalmologist)",
+                "Orthopaedic Specialist": "हड्डी रोग विशेषज्ञ (Orthopaedic)",
+                "Nephrologist": "किडनी रोग विशेषज्ञ (Nephrologist)",
+                "Endocrinologist": "हार्मोन एवं मधुमेह विशेषज्ञ (Endocrinologist)",
+                "Psychiatrist": "मानसिक स्वास्थ्य विशेषज्ञ (Psychiatrist)",
+                "Urologist": "मूत्र रोग विशेषज्ञ (Urologist)"
+            };
+            return map[specialist] || specialist;
+        }
+
+        function translateMatchLevel(matchLevel, language) {
+            if (language !== "hi") return matchLevel || "";
+            const map = {
+                "Strong symptom match": "लक्षणों का मजबूत मिलान",
+                "Moderate symptom match": "लक्षणों का मध्यम मिलान",
+                "Possible symptom match": "संभावित लक्षण मिलान",
+                "Symptom match": "लक्षण मिलान"
+            };
+            return map[matchLevel] || matchLevel || "";
+        }
+
+        function getRiskText(riskLevel, language) {
+            const t = resultTranslations[language];
+            if (riskLevel === "Urgent") {
+                return { level: t.urgentRisk, title: t.urgentTitle, message: t.urgentMessage, next: t.urgentNext };
+            }
+            if (riskLevel === "Moderate") {
+                return { level: t.moderateRisk, title: t.moderateTitle, message: t.moderateMessage, next: t.moderateNext };
+            }
+            return { level: t.lowRisk, title: t.lowTitle, message: t.lowMessage, next: t.lowNext };
+        }
+
+        function renderStaticText() {
+            const language = getCurrentLanguage();
+            const t = resultTranslations[language];
+
+            document.getElementById("pageBadge").textContent = t.badge;
+            document.getElementById("pageSubtitle").textContent = t.subtitle;
+            document.getElementById("ageLabel").textContent = t.age;
+            document.getElementById("symptomsLabel").textContent = t.symptoms;
+            document.getElementById("durationLabel").textContent = t.duration;
+            document.getElementById("loadingTitle").textContent = t.loadingTitle;
+            document.getElementById("loadingText").textContent = t.loadingText;
+            document.getElementById("nextStepLabel").textContent = t.whatNext;
+            document.getElementById("specialistDescription").textContent = t.specialistDescription;
+            document.getElementById("conditionDescription").textContent = t.conditionDescription;
+            document.getElementById("nearbyDescription").textContent = t.nearbyDescription;
+            document.getElementById("nearbyButton").querySelector("span").textContent = t.nearbyButton;
+            document.getElementById("healthNoticeText").textContent = t.notice;
+            document.getElementById("checkAgainButton").textContent = t.checkAgain;
+            document.getElementById("historyButton").textContent = t.history;
+            document.getElementById("errorTitle").textContent = t.errorTitle;
+            document.getElementById("errorMessage").textContent = t.errorMessage;
+            document.getElementById("errorButton").textContent = t.errorButton;
+        }
+
+        function renderUserInformation(result) {
+            const language = getCurrentLanguage();
+            document.getElementById("ageValue").textContent = result.age ?? "-";
+            document.getElementById("symptomsValue").textContent = translateSymptoms(result.symptoms, language);
+            document.getElementById("durationValue").textContent = translateDuration(result.duration, language);
+        }
+
+        function renderRisk(result) {
+            const language = getCurrentLanguage();
+            const riskLevel = result.risk_level || "Low";
+            const riskText = getRiskText(riskLevel, language);
+
+            const riskCard = document.getElementById("riskCard");
+            riskCard.className = "report-card triage-card";
+            if (riskLevel === "Urgent") riskCard.classList.add("is-urgent");
+            else if (riskLevel === "Moderate") riskCard.classList.add("is-moderate");
+
+            const riskLevelEl = document.getElementById("riskLevel");
+            riskLevelEl.textContent = riskText.level;
+            riskLevelEl.className = "risk-badge " + (
+                riskLevel === "Urgent" ? "risk-urgent" :
+                riskLevel === "Moderate" ? "risk-moderate" : "risk-low"
+            );
+
+            document.getElementById("riskTitle").textContent = riskText.title;
+            document.getElementById("riskMessage").textContent = riskText.message;
+            document.getElementById("nextStep").textContent = riskText.next;
+        }
+
+        function renderSpecialists(result) {
+            const language = getCurrentLanguage();
+            const list = document.getElementById("specialistList");
+            list.innerHTML = "";
+
+            const specialists = (result.recommended_specialists || []).slice();
+            if (specialists.length === 0) specialists.push("General Physician");
+
+            specialists.forEach(function (specialist) {
+                const item = document.createElement("div");
+                item.className = "specialist-pill";
+                item.innerHTML = `
+                    <svg class="icon" style="color:var(--brand);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                    </svg>
+                `;
+                const label = document.createElement("span");
+                label.textContent = translateSpecialist(specialist, language);
+                item.appendChild(label);
+                list.appendChild(item);
+            });
+        }
+
+        function renderConditions(result) {
+            const language = getCurrentLanguage();
+            const t = resultTranslations[language];
+            const list = document.getElementById("conditionList");
+            list.innerHTML = "";
+
+            const matches = result.condition_matches || [];
+            if (matches.length === 0) {
+                const empty = document.createElement("div");
+                empty.className = "condition-box";
+                empty.textContent = t.noMatches;
+                list.appendChild(empty);
+                return;
+            }
+
+            matches.forEach(function (match) {
+                const item = document.createElement("div");
+                item.className = "condition-box";
+
+                const head = document.createElement("div");
+                head.className = "condition-box-head";
+
+                const title = document.createElement("h3");
+                title.textContent = translateConditionName(match.condition, language);
+
+                const pct = document.createElement("span");
+                pct.className = "match-pct";
+                const pctVal = Number(match.match_percentage || 0);
+                pct.textContent = `${pctVal}% · ${translateMatchLevel(match.match_level, language)}`;
+
+                head.appendChild(title);
+                head.appendChild(pct);
+
+                const bar = document.createElement("div");
+                bar.className = "match-bar";
+                const fill = document.createElement("div");
+                fill.className = "match-bar-fill";
+                fill.style.width = Math.max(8, Math.min(100, pctVal)) + "%";
+                bar.appendChild(fill);
+
+                const matchedSymptoms = document.createElement("p");
+                let symptomsText = t.noSymptoms;
+                if (match.matched_symptoms && match.matched_symptoms.length > 0) {
+                    symptomsText = match.matched_symptoms.map(s => translateSymptom(s, language)).join(", ");
+                }
+                matchedSymptoms.textContent = `${t.matchedSymptoms} ${symptomsText}`;
+
+                const source = document.createElement("p");
+                source.textContent = `${t.knowledgeSource} ${match.source || t.medicalKnowledgeBase}`;
+
+                item.appendChild(head);
+                item.appendChild(bar);
+
+                if (match.overview) {
+                    const overviewEl = document.createElement("p");
+                    overviewEl.textContent = match.overview;
+                    overviewEl.style.marginBottom = "6px";
+                    item.appendChild(overviewEl);
+                }
+
+                item.appendChild(matchedSymptoms);
+                item.appendChild(source);
+
+                if (match.who_url) {
+                    const link = document.createElement("a");
+                    link.href = match.who_url;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.textContent = language === "hi" ? "WHO तथ्य पत्रक देखें" : "View WHO Fact Sheet";
+                    link.style.display = "inline-block";
+                    link.style.marginTop = "6px";
+                    link.style.fontSize = "13px";
+                    link.style.fontWeight = "600";
+                    link.style.color = "var(--brand)";
+                    link.style.textDecoration = "none";
+                    item.appendChild(link);
+                }
+
+                list.appendChild(item);
+            });
+        }
+
+        function renderResult() {
+            const resultString = sessionStorage.getItem("healthResult");
+            renderStaticText();
+
+            if (!resultString) {
+                document.getElementById("loadingBox").style.display = "none";
+                document.getElementById("resultContent").style.display = "none";
+                document.getElementById("errorBox").style.display = "block";
+                return;
+            }
+
+            let result;
+            try {
+                result = JSON.parse(resultString);
+            } catch (_error) {
+                document.getElementById("loadingBox").style.display = "none";
+                document.getElementById("resultContent").style.display = "none";
+                document.getElementById("errorBox").style.display = "block";
+                return;
+            }
+
+            document.getElementById("loadingBox").style.display = "none";
+            document.getElementById("errorBox").style.display = "none";
+            document.getElementById("resultContent").style.display = "grid";
+
+            renderUserInformation(result);
+            renderRisk(result);
+            renderSpecialists(result);
+            renderConditions(result);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            renderResult();
+            const languageSelect = document.getElementById("languageSelect");
+            if (languageSelect) {
+                languageSelect.value = getCurrentLanguage();
+                languageSelect.addEventListener("change", function () {
+                    localStorage.setItem("selectedLanguage", this.value);
+                    renderResult();
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

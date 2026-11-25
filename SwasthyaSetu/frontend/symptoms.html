@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwasthyaSetu | Symptom Assessment</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-inner">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </span>
+                <span>
+                    SwasthyaSetu
+                    <span class="brand-sub" data-i18n="brandSub">Preliminary Health Triage &amp; Care</span>
+                </span>
+            </a>
+
+            <nav class="nav-menu" aria-label="Main navigation">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="symptoms.html" aria-current="page" data-i18n="checkSymptoms">Check My Symptoms</a>
+                <a href="nearby.html" data-i18n="nearbyHospitalsNav">Nearby Care</a>
+                <a href="history.html" data-i18n="historyNav">History</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="lang-picker">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    <select id="languageSelect" aria-label="Select language">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <div class="container">
+            <div class="page-intro">
+                <span class="eyebrow-pill" data-i18n="badge">Health Awareness &amp; Referral Support</span>
+                <h1 data-i18n="symptomsTitle">Symptom Assessment</h1>
+                <p data-i18n="symptomsSubtitle">
+                    Provide your age, current symptoms, and duration for preliminary care guidance.
+                </p>
+            </div>
+
+            <div class="intake-card">
+                <form id="symptomForm">
+                    <div class="field-group">
+                        <label class="field-title" for="age" data-i18n="ageLabel">Patient Age</label>
+                        <input
+                            class="input-control"
+                            type="number"
+                            id="age"
+                            min="1"
+                            max="120"
+                            placeholder="e.g. 28"
+                            required
+                        >
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-label-row">
+                            <label class="field-title" data-i18n="symptomsLabel" style="margin-bottom:0;">Select Current Symptoms</label>
+                            <span class="selected-count-chip" id="selectedCountChip">0 selected</span>
+                        </div>
+                        <p class="field-hint" data-i18n="symptomsHelp">
+                            Choose all symptoms you are currently experiencing.
+                        </p>
+
+                        <div class="symptom-grid">
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Fever">
+                                <strong data-i18n="fever">Fever</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Cold">
+                                <strong data-i18n="cold">Cold</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Cough">
+                                <strong data-i18n="cough">Cough</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Headache">
+                                <strong data-i18n="headache">Headache</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Vomiting">
+                                <strong data-i18n="vomiting">Vomiting</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Loose Motion">
+                                <strong data-i18n="looseMotion">Loose Motion</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Stomach Pain">
+                                <strong data-i18n="stomachPain">Stomach Pain</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Breathing Problem">
+                                <strong data-i18n="breathingProblem">Breathing Problem</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Chest Pain">
+                                <strong data-i18n="chestPain">Chest Pain</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Dizziness">
+                                <strong data-i18n="dizziness">Dizziness</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Weakness">
+                                <strong data-i18n="weakness">Weakness</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Body Pain">
+                                <strong data-i18n="bodyPain">Body Pain</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+
+                            <label class="symptom-chip">
+                                <input type="checkbox" name="symptom" value="Other" id="otherSymptomCheckbox">
+                                <strong data-i18n="other">Other</strong>
+                                <span class="symptom-check-box" aria-hidden="true">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div id="otherSymptomGroup" class="other-symptom-box" style="display:none;">
+                            <label for="otherSymptomsInput" data-i18n="otherLabel">Describe Your Problem</label>
+                            <p class="field-hint" style="margin-bottom:10px;" data-i18n="otherHint">
+                                Write what problem or symptoms you are experiencing (English, Hindi, or Hinglish).
+                            </p>
+                            <textarea
+                                class="input-control"
+                                id="otherSymptomsInput"
+                                maxlength="500"
+                                placeholder="e.g. skin rash, ear pain, sore throat, or describe how you feel..."
+                                data-i18n-placeholder="otherPlaceholder"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-title" for="duration" data-i18n="durationLabel">Symptom Duration</label>
+                        <select class="input-control" id="duration" required>
+                            <option value="" data-i18n="selectDuration">Select duration</option>
+                            <option value="1_to_3_days" data-i18n="duration1to3">1–3 Days</option>
+                            <option value="4_to_7_days" data-i18n="duration4to7">4–7 Days</option>
+                            <option value="1_to_2_weeks" data-i18n="duration1to2weeks">1–2 Weeks</option>
+                            <option value="more_than_2_weeks" data-i18n="durationMore2weeks">More Than 2 Weeks</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-primary intake-submit">
+                        <span data-i18n="submitSymptoms">Run Health Assessment</span>
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand">SwasthyaSetu</div>
+                <div class="footer-sub" data-i18n="footerNotice">Not a substitute for professional medical diagnosis or treatment.</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="nearby.html" data-i18n="nearbyHospitalsNav">Nearby Care</a>
+                <a href="history.html" data-i18n="historyNav">History</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/language.js"></script>
+    <script src="js/symptoms.js"></script>
+    <script>
+        (function () {
+            const checkboxes = document.querySelectorAll('input[name="symptom"]');
+            const chip = document.getElementById("selectedCountChip");
+            const otherCheckbox = document.getElementById("otherSymptomCheckbox");
+            const otherGroup = document.getElementById("otherSymptomGroup");
+            const otherInput = document.getElementById("otherSymptomsInput");
+
+            function updateCount() {
+                const count = document.querySelectorAll('input[name="symptom"]:checked').length;
+                const lang = localStorage.getItem("selectedLanguage") || "en";
+                chip.textContent = lang === "hi" ? `${count} चुने गए` : `${count} selected`;
+            }
+
+            function syncOtherField(shouldFocus) {
+                if (!otherCheckbox || !otherGroup || !otherInput) return;
+                if (otherCheckbox.checked) {
+                    otherGroup.style.display = "block";
+                    otherInput.required = true;
+                    if (shouldFocus) otherInput.focus();
+                } else {
+                    otherGroup.style.display = "none";
+                    otherInput.required = false;
+                }
+            }
+
+            checkboxes.forEach(cb => cb.addEventListener("change", updateCount));
+            if (otherCheckbox) {
+                otherCheckbox.addEventListener("change", function () {
+                    syncOtherField(true);
+                });
+            }
+            const langSel = document.getElementById("languageSelect");
+            if (langSel) langSel.addEventListener("change", updateCount);
+            updateCount();
+            syncOtherField(false);
+        })();
+    </script>
+</body>
+
+</html>

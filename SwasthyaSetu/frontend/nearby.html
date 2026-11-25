@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SwasthyaSetu | Nearby Care</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <script src="js/language.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-inner">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </span>
+                <span>
+                    SwasthyaSetu
+                    <span class="brand-sub" data-i18n="brandSub">Preliminary Health Triage &amp; Care</span>
+                </span>
+            </a>
+
+            <nav class="nav-menu" aria-label="Main navigation">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="symptoms.html" id="checkSymptomsLink" data-i18n="checkSymptoms">Check My Symptoms</a>
+                <a href="nearby.html" id="nearbyNavLink" aria-current="page" data-i18n="nearbyHospitalsNav">Nearby Care</a>
+                <a href="history.html" id="historyLink" data-i18n="historyNav">History</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="lang-picker">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    <select id="languageSelect" aria-label="Select language">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="nearby-shell">
+        <div class="container">
+            <div class="nearby-header-row">
+                <div>
+                    <span class="eyebrow-pill" id="pageBadge">Nearby Healthcare Directory</span>
+                    <h1 id="pageTitle">Find Hospitals, Doctors, Clinics &amp; Labs</h1>
+                    <p id="pageSubtitle">
+                        Use GPS or search any city or locality to locate nearby hospitals, available doctors, clinics, and diagnostic labs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="finder-toolbar">
+                <div class="toolbar-top">
+                    <div class="search-input-wrap">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input
+                            type="text"
+                            id="areaSearchInput"
+                            placeholder="Enter city or locality (e.g., Pune, Lucknow)"
+                        >
+                    </div>
+
+                    <select id="radiusSelect" class="radius-select" aria-label="Search radius">
+                        <option value="5000">5 km</option>
+                        <option value="10000">10 km</option>
+                        <option value="20000">20 km</option>
+                    </select>
+
+                    <button type="button" class="btn-primary btn-sm" id="searchAreaBtn" onclick="searchByArea()">
+                        Search Area
+                    </button>
+
+                    <button type="button" class="btn-secondary btn-sm" id="gpsBtn" onclick="getUserLocation()">
+                        Use My GPS
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn-secondary btn-sm"
+                        id="googleMapsBtn"
+                        style="display:none;"
+                        onclick="openGoogleMapsCategory()"
+                    >
+                        Open in Google Maps
+                    </button>
+                </div>
+
+                <div class="toolbar-bottom">
+                    <div class="filter-tabs" id="filterBar">
+                        <button type="button" class="tab-btn active" data-category="all" onclick="setCategory('all')">All (0)</button>
+                        <button type="button" class="tab-btn" data-category="hospital" onclick="setCategory('hospital')">Hospitals (0)</button>
+                        <button type="button" class="tab-btn" data-category="doctor" onclick="setCategory('doctor')">Doctors (0)</button>
+                        <button type="button" class="tab-btn" data-category="clinic" onclick="setCategory('clinic')">Clinics (0)</button>
+                        <button type="button" class="tab-btn" data-category="lab" onclick="setCategory('lab')">Labs (0)</button>
+                    </div>
+
+                    <label class="availability-toggle">
+                        <input type="checkbox" id="openOnlyCheckbox" onchange="applyCurrentFilters()">
+                        <span id="openOnlyLabel">Available / Open Now Only</span>
+                    </label>
+                </div>
+
+                <div id="locationStatus" class="status-banner">
+                    Detecting your location...
+                </div>
+            </div>
+
+            <div class="finder-workspace" id="finderWorkspace">
+                <div>
+                    <div id="resultsContainer" class="directory-list" style="display:none;"></div>
+
+                    <div id="emptyState" class="state-card" style="display:none;">
+                        <div class="state-icon" aria-hidden="true">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <h3 id="emptyTitle">Location Required</h3>
+                        <p id="emptyText">
+                            Please allow location access or search by city or locality to view nearby care options.
+                        </p>
+                        <button type="button" class="btn-primary btn-sm" id="retryButton" onclick="getUserLocation()">
+                            Try GPS Again
+                        </button>
+                    </div>
+                </div>
+
+                <aside id="mapWrapper" class="map-panel" style="display:none;">
+                    <div id="hospitalMap"></div>
+                    <div class="map-legend">
+                        <span class="legend-item"><span class="legend-dot" style="background:#0c745a;"></span> <span id="legendHospital">Hospital</span></span>
+                        <span class="legend-item"><span class="legend-dot" style="background:#1d4ed8;"></span> <span id="legendDoctor">Doctor</span></span>
+                        <span class="legend-item"><span class="legend-dot" style="background:#c2410c;"></span> <span id="legendClinic">Clinic</span></span>
+                        <span class="legend-item"><span class="legend-dot" style="background:#6d28d9;"></span> <span id="legendLab">Diagnostic / Pathology Lab</span></span>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand">SwasthyaSetu</div>
+                <div class="footer-sub" data-i18n="footerNotice">Not a substitute for professional medical diagnosis or treatment.</div>
+            </div>
+            <div class="footer-links">
+                <a href="index.html" data-i18n="home">Home</a>
+                <a href="symptoms.html" data-i18n="checkSymptoms">Check My Symptoms</a>
+                <a href="history.html" data-i18n="historyNav">History</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE =
+            window.location.protocol === "file:" ||
+            ["5500", "5501", "3000", "5173"].includes(window.location.port)
+                ? "http://127.0.0.1:8001"
+                : "";
+
+        let activeCoords = null;
+        let allFacilities = [];
+        let activeCategory = "all";
+        let mapInstance = null;
+        let markerLayer = null;
+        let latestRequestId = 0;
+        let manualSearchActive = false;
+
+        const CATEGORY_STYLE = {
+            hospital: {
+                color: "#0c745a",
+                mapsQuery: "hospitals",
+                svg: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M10 10h4M12 8v4"/></svg>`
+            },
+            doctor: {
+                color: "#1d4ed8",
+                mapsQuery: "doctors",
+                svg: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
+            },
+            clinic: {
+                color: "#c2410c",
+                mapsQuery: "clinics",
+                svg: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`
+            },
+            lab: {
+                color: "#6d28d9",
+                mapsQuery: "diagnostic pathology labs",
+                svg: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/></svg>`
+            },
+            all: {
+                color: "#0c745a",
+                mapsQuery: "hospitals doctors clinics labs",
+                svg: ""
+            }
+        };
+
+        const nearbyTranslations = {
+            en: {
+                badge: "Nearby Healthcare Directory",
+                title: "Find Hospitals, Doctors, Clinics & Labs",
+                subtitle: "Use GPS or search any city or locality to locate nearby hospitals, available doctors, clinics, and diagnostic labs.",
+                gettingLocation: "Detecting your location...",
+                searchingHealthcare: "Searching nearby hospitals, doctors, clinics, and labs...",
+                loadedSummary: (total, h, d, c, l) =>
+                    `Showing ${total} care locations: ${h} Hospitals, ${d} Doctors, ${c} Clinics, ${l} Labs`,
+                noResultsFound: "No matching locations found for this filter. Try another category, uncheck 'Available / Open Now Only', or expand the radius.",
+                locationDenied: "Location permission was not granted. Allow GPS access or search by city or locality above.",
+                locationRequired: "Location Required",
+                noResultsTitle: "No Matching Locations",
+                tryAgain: "Try GPS Again",
+                searchArea: "Search Area",
+                useGps: "Use My GPS",
+                areaPlaceholder: "Enter city or locality (e.g., Pune, Lucknow)",
+                googleMapsAll: "Open in Google Maps",
+                openOnMap: "Directions / Maps",
+                callNow: "Call",
+                tabAll: "All",
+                tabHospital: "Hospitals",
+                tabDoctor: "Doctors",
+                tabClinic: "Clinics",
+                tabLab: "Labs",
+                openOnly: "Available / Open Now Only",
+                typeHospital: "Hospital",
+                typeDoctor: "Doctor",
+                typeClinic: "Clinic",
+                typeLab: "Diagnostic Lab",
+                emergencyAvailable: "Emergency Care",
+                distanceAway: "km away",
+                addressUnavailable: "Address not listed on OpenStreetMap",
+                hoursNotListed: "Hours not listed — call to confirm",
+                available247: "Open 24/7",
+                availableNowPrefix: "Available now",
+                closedNowPrefix: "Closed now",
+                specialtyPrefix: "Specialty:",
+                checkSymptoms: "Check My Symptoms",
+                nearbyCare: "Nearby Care",
+                history: "History",
+                areaNotFound: "Could not locate that city or area. Please try another name.",
+                legendHospital: "Hospital",
+                legendDoctor: "Doctor",
+                legendClinic: "Clinic",
+                legendLab: "Diagnostic / Pathology Lab"
+            },
+            hi: {
+                badge: "पास की स्वास्थ्य सेवा निर्देशिका",
+                title: "अस्पताल, डॉक्टर, क्लिनिक और लैब खोजें",
+                subtitle: "मैप पर अपने आसपास के अस्पताल, उपलब्ध डॉक्टर, क्लिनिक और जांच लैब देखने के लिए GPS चुनें या शहर/क्षेत्र लिखें।",
+                gettingLocation: "आपका स्थान प्राप्त किया जा रहा है...",
+                searchingHealthcare: "पास के अस्पताल, डॉक्टर, क्लिनिक और लैब खोजे जा रहे हैं...",
+                loadedSummary: (total, h, d, c, l) =>
+                    `कुल ${total} स्वास्थ्य स्थान मिले: ${h} अस्पताल, ${d} डॉक्टर, ${c} क्लिनिक, ${l} लैब`,
+                noResultsFound: "इस फ़िल्टर के लिए कोई स्थान नहीं मिला। दूसरा टैब चुनें, दूरी बढ़ाएं, या उपलब्धता फ़िल्टर हटाएं।",
+                locationDenied: "स्थान की अनुमति नहीं मिली। GPS अनुमति दें या ऊपर शहर/क्षेत्र का नाम लिखें।",
+                locationRequired: "स्थान आवश्यक है",
+                noResultsTitle: "कोई परिणाम नहीं मिला",
+                tryAgain: "GPS दोबारा प्रयास करें",
+                searchArea: "क्षेत्र खोजें",
+                useGps: "मेरा GPS उपयोग करें",
+                areaPlaceholder: "शहर या क्षेत्र लिखें (जैसे पुणे, लखनऊ)",
+                googleMapsAll: "Google Maps पर खोलें",
+                openOnMap: "मैप / दिशा देखें",
+                callNow: "कॉल करें",
+                tabAll: "सभी",
+                tabHospital: "अस्पताल",
+                tabDoctor: "डॉक्टर",
+                tabClinic: "क्लिनिक",
+                tabLab: "लैब",
+                openOnly: "केवल अभी उपलब्ध दिखाएं",
+                typeHospital: "अस्पताल",
+                typeDoctor: "डॉक्टर",
+                typeClinic: "क्लिनिक",
+                typeLab: "डायग्नोस्टिक लैब",
+                emergencyAvailable: "आपातकालीन सेवा",
+                distanceAway: "किमी दूर",
+                addressUnavailable: "OpenStreetMap पर पता उपलब्ध नहीं है",
+                hoursNotListed: "समय सूचीबद्ध नहीं — कॉल करके पुष्टि करें",
+                available247: "24/7 खुला",
+                availableNowPrefix: "अभी उपलब्ध",
+                closedNowPrefix: "अभी बंद",
+                specialtyPrefix: "विशेषज्ञता:",
+                checkSymptoms: "लक्षण जांचें",
+                nearbyCare: "पास की स्वास्थ्य सेवा",
+                history: "इतिहास",
+                areaNotFound: "यह शहर/क्षेत्र नहीं मिला। कृपया दूसरा नाम लिखकर प्रयास करें।",
+                legendHospital: "अस्पताल",
+                legendDoctor: "डॉक्टर",
+                legendClinic: "क्लिनिक",
+                legendLab: "डायग्नोस्टिक / पैथोलॉजी लैब"
+            }
+        };
+
+        function getLanguage() {
+            return localStorage.getItem("selectedLanguage") || "en";
+        }
+
+        function escapeHtml(value) {
+            if (value === null || value === undefined) return "";
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function getTypeLabel(type, t) {
+            if (type === "doctor") return t.typeDoctor;
+            if (type === "clinic") return t.typeClinic;
+            if (type === "lab") return t.typeLab;
+            return t.typeHospital;
+        }
+
+        function formatAvailability(item, t) {
+            if (item.is_open_now === true) {
+                if ((item.availability || "").includes("24/7")) return t.available247;
+                return item.opening_hours ? `${t.availableNowPrefix} (${item.opening_hours})` : t.availableNowPrefix;
+            }
+            if (item.is_open_now === false) {
+                return item.opening_hours ? `${t.closedNowPrefix} (${item.opening_hours})` : t.closedNowPrefix;
+            }
+            if (item.opening_hours) return item.opening_hours;
+            return t.hoursNotListed;
+        }
+
+        function updateTabsUI() {
+            const language = getLanguage();
+            const t = nearbyTranslations[language] || nearbyTranslations.en;
+
+            const counts = {
+                all: allFacilities.length,
+                hospital: allFacilities.filter(f => f.type === "hospital").length,
+                doctor: allFacilities.filter(f => f.type === "doctor").length,
+                clinic: allFacilities.filter(f => f.type === "clinic").length,
+                lab: allFacilities.filter(f => f.type === "lab").length
+            };
+
+            const labels = {
+                all: `${t.tabAll} (${counts.all})`,
+                hospital: `${t.tabHospital} (${counts.hospital})`,
+                doctor: `${t.tabDoctor} (${counts.doctor})`,
+                clinic: `${t.tabClinic} (${counts.clinic})`,
+                lab: `${t.tabLab} (${counts.lab})`
+            };
+
+            document.querySelectorAll("#filterBar .tab-btn").forEach(btn => {
+                const cat = btn.getAttribute("data-category");
+                btn.textContent = labels[cat] || cat;
+                btn.classList.toggle("active", cat === activeCategory);
+            });
+        }
+
+        function updateLanguageText() {
+            const language = getLanguage();
+            const t = nearbyTranslations[language] || nearbyTranslations.en;
+
+            document.getElementById("pageBadge").textContent = t.badge;
+            document.getElementById("pageTitle").textContent = t.title;
+            document.getElementById("pageSubtitle").textContent = t.subtitle;
+            document.getElementById("searchAreaBtn").textContent = t.searchArea;
+            document.getElementById("gpsBtn").textContent = t.useGps;
+            document.getElementById("areaSearchInput").placeholder = t.areaPlaceholder;
+            document.getElementById("googleMapsBtn").textContent = t.googleMapsAll;
+            document.getElementById("openOnlyLabel").textContent = t.openOnly;
+            document.getElementById("checkSymptomsLink").textContent = t.checkSymptoms;
+            document.getElementById("nearbyNavLink").textContent = t.nearbyCare;
+            document.getElementById("historyLink").textContent = t.history;
+            document.getElementById("retryButton").textContent = t.tryAgain;
+            document.getElementById("legendHospital").textContent = t.legendHospital;
+            document.getElementById("legendDoctor").textContent = t.legendDoctor;
+            document.getElementById("legendClinic").textContent = t.legendClinic;
+            document.getElementById("legendLab").textContent = t.legendLab;
+            updateTabsUI();
+        }
+
+        function openGoogleMapsCategory() {
+            if (!activeCoords) return;
+            const style = CATEGORY_STYLE[activeCategory] || CATEGORY_STYLE.all;
+            const mapsUrl =
+                "https://www.google.com/maps/search/" +
+                encodeURIComponent(style.mapsQuery) +
+                "/@" +
+                activeCoords.latitude +
+                "," +
+                activeCoords.longitude +
+                ",14z";
+            window.open(mapsUrl, "_blank", "noopener,noreferrer");
+        }
+
+        function renderMap(latitude, longitude, facilities) {
+            const mapWrapper = document.getElementById("mapWrapper");
+            if (typeof L === "undefined") {
+                mapWrapper.style.display = "none";
+                return;
+            }
+
+            mapWrapper.style.display = "block";
+
+            if (!mapInstance) {
+                mapInstance = L.map("hospitalMap").setView([latitude, longitude], 13);
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    attribution: "&copy; OpenStreetMap contributors"
+                }).addTo(mapInstance);
+                markerLayer = L.layerGroup().addTo(mapInstance);
+            } else {
+                mapInstance.setView([latitude, longitude], 13);
+                markerLayer.clearLayers();
+            }
+
+            setTimeout(() => {
+                if (mapInstance) mapInstance.invalidateSize();
+            }, 100);
+
+            L.circleMarker([latitude, longitude], {
+                radius: 8,
+                color: "#0f241f",
+                fillColor: "#0ea5e9",
+                fillOpacity: 0.95
+            })
+                .bindPopup("Your Location")
+                .addTo(markerLayer);
+
+            facilities.forEach((item) => {
+                if (item.latitude == null || item.longitude == null) return;
+                const style = CATEGORY_STYLE[item.type] || CATEGORY_STYLE.hospital;
+                L.circleMarker([item.latitude, item.longitude], {
+                    radius: 8,
+                    color: "#ffffff",
+                    weight: 2,
+                    fillColor: style.color,
+                    fillOpacity: 0.92
+                })
+                    .bindPopup(
+                        `<strong>${escapeHtml(item.name)}</strong><br>` +
+                        `${escapeHtml(item.distance_km)} km` +
+                        (item.opening_hours ? `<br>${escapeHtml(item.opening_hours)}` : "") +
+                        (item.address ? `<br>${escapeHtml(item.address)}` : "")
+                    )
+                    .addTo(markerLayer);
+            });
+        }
+
+        function setCategory(category) {
+            activeCategory = category;
+            updateTabsUI();
+            applyCurrentFilters();
+        }
+
+        function applyCurrentFilters() {
+            if (!activeCoords) return;
+            const openOnly = document.getElementById("openOnlyCheckbox").checked;
+
+            const filtered = allFacilities.filter(item => {
+                if (activeCategory !== "all" && item.type !== activeCategory) return false;
+                if (openOnly && item.is_open_now !== true) return false;
+                return true;
+            });
+
+            renderFacilities(filtered, activeCoords.latitude, activeCoords.longitude);
+        }
+
+        function renderFacilities(facilities, latitude, longitude) {
+            const language = getLanguage();
+            const t = nearbyTranslations[language] || nearbyTranslations.en;
+
+            const resultsContainer = document.getElementById("resultsContainer");
+            const emptyState = document.getElementById("emptyState");
+            const statusBox = document.getElementById("locationStatus");
+
+            const hCount = allFacilities.filter(f => f.type === "hospital").length;
+            const dCount = allFacilities.filter(f => f.type === "doctor").length;
+            const cCount = allFacilities.filter(f => f.type === "clinic").length;
+            const lCount = allFacilities.filter(f => f.type === "lab").length;
+
+            resultsContainer.innerHTML = "";
+            renderMap(latitude, longitude, facilities);
+
+            if (!facilities || facilities.length === 0) {
+                resultsContainer.style.display = "none";
+                emptyState.style.display = "block";
+                document.getElementById("emptyTitle").textContent = t.noResultsTitle;
+                document.getElementById("emptyText").textContent = t.noResultsFound;
+                statusBox.textContent = allFacilities.length > 0
+                    ? t.loadedSummary(allFacilities.length, hCount, dCount, cCount, lCount)
+                    : t.noResultsFound;
+                return;
+            }
+
+            statusBox.textContent = t.loadedSummary(allFacilities.length, hCount, dCount, cCount, lCount);
+            emptyState.style.display = "none";
+            resultsContainer.style.display = "grid";
+
+            facilities.forEach((item) => {
+                const card = document.createElement("article");
+                card.className = "care-card";
+                const style = CATEGORY_STYLE[item.type] || CATEGORY_STYLE.hospital;
+
+                const mapsUrl =
+                    item.maps_url ||
+                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        item.name + " " + item.latitude + "," + item.longitude
+                    )}`;
+
+                const typeClass = item.type === "hospital" ? "" : escapeHtml(item.type);
+
+                let availClass = "hours-unknown";
+                if (item.is_open_now === true) availClass = "available";
+                else if (item.is_open_now === false) availClass = "closed";
+
+                const availText = formatAvailability(item, t);
+
+                const emergencyBadge =
+                    item.emergency && item.emergency.toLowerCase() === "yes"
+                        ? `<span class="meta-pill emergency">${escapeHtml(t.emergencyAvailable)}</span>`
+                        : "";
+
+                const specialtyHtml = item.specialty
+                    ? `<p class="care-detail-line"><strong>${escapeHtml(t.specialtyPrefix)}</strong> ${escapeHtml(item.specialty)}</p>`
+                    : "";
+
+                const phoneHtml = item.phone
+                    ? `<p class="care-detail-line">${escapeHtml(item.phone)}</p>`
+                    : "";
+
+                const callButtonHtml = item.phone
+                    ? `<a class="btn-secondary btn-sm" href="tel:${escapeHtml(item.phone)}">${escapeHtml(t.callNow)}</a>`
+                    : "";
+
+                card.innerHTML = `
+                    <div class="care-card-top">
+                        <div class="care-card-title-wrap">
+                            <span class="care-type-icon ${typeClass}" aria-hidden="true">${style.svg}</span>
+                            <h3>${escapeHtml(item.name)}</h3>
+                        </div>
+                        <span class="distance-tag">${escapeHtml(item.distance_km)} ${escapeHtml(t.distanceAway)}</span>
+                    </div>
+                    <div class="care-badges">
+                        <span class="meta-pill ${typeClass}">${escapeHtml(getTypeLabel(item.type, t))}</span>
+                        <span class="meta-pill ${availClass}">${escapeHtml(availText)}</span>
+                        ${emergencyBadge}
+                    </div>
+                    ${specialtyHtml}
+                    <p class="care-detail-line">${escapeHtml(item.address || t.addressUnavailable)}</p>
+                    ${phoneHtml}
+                    <div class="care-actions">
+                        <a
+                            class="btn-primary btn-sm"
+                            href="${escapeHtml(mapsUrl)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            ${escapeHtml(t.openOnMap)}
+                        </a>
+                        ${callButtonHtml}
+                    </div>
+                `;
+
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        async function loadNearbyHealthcare(latitude, longitude, requestId = null) {
+            const language = getLanguage();
+            const t = nearbyTranslations[language] || nearbyTranslations.en;
+            const radius = Number(document.getElementById("radiusSelect").value || 5000);
+            const currentId = requestId !== null ? requestId : ++latestRequestId;
+
+            activeCoords = { latitude, longitude };
+            document.getElementById("googleMapsBtn").style.display = "inline-flex";
+            document.getElementById("locationStatus").textContent = t.searchingHealthcare;
+
+            try {
+                const response = await fetch(
+                    `${API_BASE}/nearby-healthcare?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}&radius=${encodeURIComponent(radius)}&category=all`
+                );
+
+                if (currentId !== latestRequestId) return;
+                if (!response.ok) throw new Error("Server error");
+
+                const data = await response.json();
+                if (currentId !== latestRequestId) return;
+
+                allFacilities = data.facilities || [];
+                updateTabsUI();
+                applyCurrentFilters();
+            } catch (error) {
+                if (currentId !== latestRequestId) return;
+                console.error("Nearby healthcare error:", error);
+                allFacilities = [];
+                updateTabsUI();
+                renderFacilities([], latitude, longitude);
+            }
+        }
+
+        async function searchByArea() {
+            const language = getLanguage();
+            const t = nearbyTranslations[language] || nearbyTranslations.en;
+            const query = document.getElementById("areaSearchInput").value.trim();
+
+            if (!query) {
+                getUserLocation();
+                return;
+            }
+
+            manualSearchActive = true;
+            const requestId = ++latestRequestId;
+            document.getElementById("locationStatus").textContent = t.searchingHealthcare;
+
+            try {
+                const resp = await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`
+                );
+                if (requestId !== latestRequestId) return;
+                if (!resp.ok) throw new Error("Geocoding failed");
+
+                const results = await resp.json();
+                if (requestId !== latestRequestId) return;
+
+                if (!results || results.length === 0) {
+                    showError(t.areaNotFound);
+                    return;
+                }
+
+                const lat = parseFloat(results[0].lat);
+                const lon = parseFloat(results[0].lon);
+
+                sessionStorage.setItem(
+                    "userLocation",
+                    JSON.stringify({ latitude: lat, longitude: lon })
+                );
+
+                await loadNearbyHealthcare(lat, lon, requestId);
+            } catch (error) {
+                if (requestId !== latestRequestId) return;
+                console.error("Area search error:", error);
+                showError(t.areaNotFound);
+            }
+        }
+
+        function getUserLocation(isInitialAuto = false) {
+            const language = getLanguage();
+            const t = nearbyTranslations[language] || nearbyTranslations.en;
+
+            if (!isInitialAuto) {
+                manualSearchActive = false;
+            }
+            const requestId = ++latestRequestId;
+
+            if (!navigator.geolocation) {
+                showError(t.locationDenied);
+                return;
+            }
+
+            document.getElementById("locationStatus").textContent = t.gettingLocation;
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    if ((isInitialAuto && manualSearchActive) || requestId !== latestRequestId) return;
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    sessionStorage.setItem(
+                        "userLocation",
+                        JSON.stringify({ latitude: latitude, longitude: longitude })
+                    );
+
+                    loadNearbyHealthcare(latitude, longitude, requestId);
+                },
+                function (error) {
+                    if ((isInitialAuto && manualSearchActive) || requestId !== latestRequestId) return;
+                    console.log("Location error:", error);
+                    showError(t.locationDenied);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 12000,
+                    maximumAge: 60000
+                }
+            );
+        }
+
+        function showError(message) {
+            const language = getLanguage();
+            const t = nearbyTranslations[language] || nearbyTranslations.en;
+
+            document.getElementById("locationStatus").textContent = message;
+            document.getElementById("resultsContainer").style.display = "none";
+            document.getElementById("mapWrapper").style.display = "none";
+            document.getElementById("emptyState").style.display = "block";
+            document.getElementById("emptyTitle").textContent = t.locationRequired;
+            document.getElementById("emptyText").textContent = message;
+            document.getElementById("retryButton").textContent = t.tryAgain;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateLanguageText();
+
+            const radiusSelect = document.getElementById("radiusSelect");
+            if (radiusSelect) {
+                radiusSelect.addEventListener("change", function () {
+                    if (activeCoords) {
+                        loadNearbyHealthcare(activeCoords.latitude, activeCoords.longitude);
+                    }
+                });
+            }
+
+            const areaInput = document.getElementById("areaSearchInput");
+            if (areaInput) {
+                areaInput.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        searchByArea();
+                    }
+                });
+            }
+
+            const languageSelect = document.getElementById("languageSelect");
+            if (languageSelect) {
+                languageSelect.value = getLanguage();
+                languageSelect.addEventListener("change", function () {
+                    localStorage.setItem("selectedLanguage", this.value);
+                    updateLanguageText();
+                    if (activeCoords) {
+                        applyCurrentFilters();
+                    }
+                });
+            }
+
+            const savedLocation = sessionStorage.getItem("userLocation");
+            if (savedLocation) {
+                try {
+                    const loc = JSON.parse(savedLocation);
+                    if (typeof loc.latitude === "number" && typeof loc.longitude === "number") {
+                        loadNearbyHealthcare(loc.latitude, loc.longitude);
+                        return;
+                    }
+                } catch (_err) {
+                    // Fallback to GPS
+                }
+            }
+
+            getUserLocation(true);
+        });
+    </script>
+</body>
+
+</html>
